@@ -7,13 +7,16 @@ public class Grafo {
 
 private HashMap<Nodo,LinkedList<Nodo>> g;
 private LinkedList<Nodo> nodos;
-private ArrayList<String> camino;
+private ArrayList<String> camino=new ArrayList<>();
 
     private class Nodo{
         public String cadena;
+        public int e_in;
+        public int e_out;
 
         public Nodo(String cadenaN){
             this.cadena=cadenaN ;
+            this.e_in = this.e_out = 0;
         }
     }
 
@@ -45,6 +48,8 @@ private ArrayList<String> camino;
                     g.put(nodoI,new LinkedList<Nodo>());
                     g.get(nodoI).add(nodoD);
                 }
+                nodoI.e_out +=1;
+                nodoD.e_in +=1;
             }
         }
     }
@@ -69,18 +74,21 @@ private ArrayList<String> camino;
 
     public void visitar(Nodo n){
         //Primero buscar nodo en g(HashMap)
-        try {
-            while (g.get(n).size() > 0) {
-                Nodo dst = g.get(n).pop();
-               camino.add(dst.cadena);
-                visitar(dst);
-            }
-        }catch (Exception ex){
-            //camino.add(n.cadena);
+        while(g.get(n).size() > 0){
+            n = g.get(n).poll();
+            camino.add(n.cadena);
+            if (n.e_out==0) break;
         }
     }
 
     public void ese(){
-        visitar(nodos.get(0));
+        for (Nodo nodo:
+             nodos) {
+            if(nodo.e_in == 0){
+                camino.add(nodo.cadena);
+                visitar(nodo);
+                break;
+            }
+        }
     }
 }
