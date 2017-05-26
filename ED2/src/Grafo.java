@@ -8,6 +8,7 @@ public class Grafo {
 private HashMap<Nodo,LinkedList<Nodo>> g;
 private LinkedList<Nodo> nodos;
 private ArrayList<String> camino=new ArrayList<>();
+private String cadenaADN;
 
     private class Nodo{
         public String cadena;
@@ -23,6 +24,7 @@ private ArrayList<String> camino=new ArrayList<>();
     public Grafo(String[] cadena, int k){
         g = new HashMap<>();
         nodos = new LinkedList<>();
+        cadenaADN="";
 
         for (String st : cadena) {
             for (String kmer : this.k_1mer(st,k)){
@@ -79,6 +81,7 @@ private ArrayList<String> camino=new ArrayList<>();
             camino.add(n.cadena);
             if (n.e_out==0) break;
         }
+        laCadena();
     }
 
     public void ese(){
@@ -90,5 +93,14 @@ private ArrayList<String> camino=new ArrayList<>();
                 break;
             }
         }
+    }
+
+    public void laCadena(){
+        cadenaADN = camino.get(0);
+        for (int i=1; i < camino.size(); ++i) {
+            String actual = camino.get(i);
+            cadenaADN += actual.charAt(actual.length()-1);
+        }
+        System.out.print(cadenaADN);
     }
 }
