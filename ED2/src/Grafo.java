@@ -25,16 +25,19 @@ private ArrayList<String> camino;
             for (String kmer : this.k_1mer(st,k)){
                 String km1I = kmer.substring(0,kmer.length() - 1);
                 String km1D = kmer.substring(1);
-                Nodo nodoI=null,nodoD = null ,nodoA,nodoB;
-                if ((nodoA=contiene(km1I))!= null){
-                    nodoI=nodoA;
+                Nodo nodoI=null,nodoD = null,tmp;
+                int nodoA,nodoB;
+                if ((nodoA=contiene(km1I))!= -1) {
+                    nodoI = nodos.get(nodoA);
                 }else{
-                    nodoI = nodoA = new Nodo(km1I);
+                    nodoI = tmp = new Nodo(km1I);
+                    nodos.add(tmp);
                 }
-                if ((nodoB=contiene(km1I))!= null){
-
+                if ((nodoB=contiene(km1D))!= -1){
+                    nodoD=nodos.get(nodoB);
                 }else {
-                    nodoD = nodoB = new Nodo(km1D);
+                    nodoD = tmp = new Nodo(km1D);
+                    nodos.add(tmp);
                 }
                 if(g.containsKey(nodoI)){
                     g.get(nodoI).add(nodoD);
@@ -56,32 +59,28 @@ private ArrayList<String> camino;
         return stArr;
     }
 
-    public Nodo contiene(String cadenaA){
+    public int contiene(String cadenaA){
         for (Nodo nodo:
              nodos) {
-            if (nodo.cadena.equals(cadenaA)) return nodo;
+            if (nodo.cadena.equals(cadenaA)) return nodos.indexOf(nodo);
         }
-        return null;
+        return -1;
     }
 
     public void visitar(Nodo n){
-        while (g.get(n).size() > 0){
-            Nodo dst=g.get(n).pop();
-            visitar(dst);
+        //Primero buscar nodo en g(HashMap)
+        try {
+            while (g.get(n).size() > 0) {
+                Nodo dst = g.get(n).pop();
+               camino.add(dst.cadena);
+                visitar(dst);
+            }
+        }catch (Exception ex){
+            //camino.add(n.cadena);
         }
-        System.out.println(n.cadena);
     }
 
-    public void imprimir(){
-        /*Random rdm = new Random();
-        List<Nodo> keys = new ArrayList<Nodo>(g.keySet());
-        Nodo rdmKey = keys.get(rdm.nextInt(keys.size()));
-        visitar(rdmKey);*/
-        for(LinkedList<Nodo> k : g.values()){
-            for (Nodo m:
-                 k) {
-                System.out.print(m.cadena + ",");
-            }
-        }
+    public void ese(){
+        visitar(nodos.get(0));
     }
 }
