@@ -21,7 +21,7 @@ private String cadenaADN;
         }
     }
 
-    public Grafo(String[] cadena, int k){
+    public Grafo(LinkedList<String> cadena, int k){
         g = new HashMap<>();
         nodos = new LinkedList<>();
         cadenaADN="";
@@ -95,12 +95,12 @@ private String cadenaADN;
         }
     }
 
-    public void laCadena(){
+    public String laCadena(){
         cadenaADN = camino.get(0);
         for (int i=1; i < camino.size(); ++i) {
             String actual = camino.get(i);
             cadenaADN += actual.charAt(actual.length()-1);
         }
-        System.out.print(cadenaADN);
+        return cadenaADN;
     }
 }
